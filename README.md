@@ -1,16 +1,15 @@
 # Individual-Project- S&P 500 up or down
 
-## Project description with goals
-### Description
+## Description
 * We want to be able to predict the wheter the S&P 500 will be up or down by close on a geven day
 
-### Background Info
+## Background Info
 * The S&P 500 is a stock market index composed of 500 large companies having common stock listed on the New York Stock Exchange (NYSE) or Nasdaq. Founded in 1923, it is now considered one of the best overall indicators of the US stock market.
 * There are several investment vehicles offered by various companies that aim to mimic the composition of the S&P 500 and are tradeble under ticker symbols like SPY and SPX
 * For this project we will use ^GSPC, which is Yahoo Finance's 'proprietary' ticker for the S&P 500 index. 
     * However, it must be remembered that ^GSPC is a price index and is not tradeable. It only shows the movement of stock prices in the S&P 500 index.
 
-### Goals¶
+## Goals¶
 * Construct an ML model that predicts S&P 500 Up or Down
 * Find the key drivers of S&P 500 movement.
 * Deliver a report that the data science team can read through and replicate, understand what steps were taken, why and what the outcome was.
@@ -23,9 +22,14 @@ There should be some combination of features that can be used to build a predict
 * 3. ? 
 * 4. ? 
 *****************************************
-** Project Plan 
-*** Acquire data from Yahoo Finance 
-*** Prepare data
+## Project Plan 
+* Acquire data from Yahoo Finance 
+* Prepare data
+    * Drop data prior to 1990 
+        * Modern electronic trading dramatically chaged access to the markets
+        * This caused a major change in market behaviors 
+        * dropping this data will keep the model from favoring 70 years of data that generally no longer apply 
+        * NASDAQ introduced electronic trading inthe 1980's, but the NYSE didn't begin using them until the 90's
     **** Create Engineered columns from existing data
 
         ***** evaluate database to tidy up 
@@ -46,6 +50,7 @@ There should be some combination of features that can be used to build a predict
 * 1. Clone this repo.
 * 2. Acquire the data from yfinance 
     * use terminal to run pip install yfinance 
+    * add import yfinance as yf to your libraries
 * 3. Put the data in the file containing the cloned repo.
 * 4. Run notebook.
 
