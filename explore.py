@@ -44,83 +44,68 @@ from sklearn.metrics import classification_report, confusion_matrix, plot_confus
 
 # Project related
 import wrangle
-############################### exploration data visuals ##############################
-
-def plot_regression(train):
-    '''
-    this feature brings in the lmplot for the counties to tax value
-    '''
-    sns.color_palette("magma")
-    sns.lmplot(x="area", y="taxvalue", hue='county', data=train, scatter=True,scatter_kws={'alpha': 0.2}, line_kws={'linewidth': 3})
-    plt.xlabel("Area in Sq.ft")
-    plt.ylabel("Tax Value in USD millions")
-    plt.title("Regression Plot: Area vs. Tax Value")
-    plt.show()
-
-def bed_chart(data):
-    '''
-    creates a scatter plot for bedrooms vs tax value
-    '''
-    # Specify the x and y variables
-    x = data['bedrooms']
-    y = data['taxvalue']
-    # Create the scatter plot
-    plt.scatter(x, y, alpha=0.5)
-    # Set the labels and title
-    plt.xlabel("Number of Bedrooms")
-    plt.ylabel("Tax Value in millions USD")
-    plt.title("Number of Bedrooms vs. Tax Value")
-    # Display the chart
-    plt.show()
-    
-def bath_chart(data):
-    '''
-    creates a scatter plot for bathrooms vs tax value
-    '''
-    # Specify the x and y variables
-    x = data['bathrooms']
-    y = data['taxvalue']
-    # Create the scatter plot
-    plt.scatter(x, y, alpha=0.5)
-    # Set the labels and title
-    plt.xlabel("Number of Bathrooms")
-    plt.ylabel("Tax Value in millions USD")
-    plt.title("Number of Bathrooms vs. Tax Value")
-    # Display the chart
-    plt.show()
-    
-def lot_chart(data):
-    '''
-    creates a scatter plot for lot vs tax value
-    '''
-    # Specify the x and y variables
-    x = data['lot']
-    y = data['taxvalue']
-    # Create the scatter plot
-    plt.scatter(x, y, alpha=0.5)
-    # Calculate the best-fit line
-    slope, intercept = np.polyfit(x, y, 1)
-    best_fit_line = slope * x + intercept
-    # Plot the best-fit line
-    plt.plot(x, best_fit_line, color='red')
-    # Set the labels and title
-    plt.xlabel("Lot in Sqft")
-    plt.ylabel("Tax Value in millions USD")
-    plt.title("Lot vs. Tax Value with Best-Fit Line")
-    # Display the chart
-    plt.show()
+###### VISUALIZATIONS ########
 
 def get_distplot(train):
+    '''
+    creates a ditribution chart for the target variable target
+    '''
     # Plot the distribution of the target variable
-    plt.figure(figsize=(10, 6))
-    sns.histplot(train['taxvalue'], kde=True)
-    plt.xlabel('Tax Value in millions USD')
+    plt.figure(figsize=(12, 4))
+    sns.histplot(train['target'], kde=False, shrink=8)
+    plt.xlabel('Target Buy Days')
     plt.ylabel('Count')
-    plt.title('Distribution of Tax Values')
-    # Add a vertical line for the baseline RMSE
-    plt.axvline(x=383891.952694, color='red', linestyle='--', label='Baseline RMSE')
+    plt.title('Distribution of Target buy days')
+    # Add a vertical line for the baseline 
+    plt.axvline(x=1, color='red', linestyle='--', label='Baseline')
     plt.legend()
-    plt.show()   
+    plt.show()
+    
+def volume_chart(train):
+    '''
+    creates a swarm plot for target vs trade volume
+    '''
+    plt.figure(figsize=(12,4))
+    sns.swarmplot(data=train, x='target', y='volume', palette='Set1')
+    plt.title('Target and close')
+    plt.ylabel('Close in $USD')
+    plt.xlabel('Target Buy Day 0=no 1=yes')
+    plt.show
+    
+def high_chart(train):
+    '''
+    creates a strip plot for target vs high daily value
+    '''
+    plt.figure(figsize=(12,4))
+    sns.stripplot(data=train, x='target', y='high', palette='Set1')
+    plt.title('Target and High')
+    plt.ylabel('High in $USD')
+    plt.xlabel('Target Buy Day 0=no 1=yes')
+    plt.show()
+    
+def open_chart(train):
+    '''
+    creates a boxen plot for target vs open
+    '''
+    plt.figure(figsize=(12,4))
+    sns.boxenplot(data=train, x='target', y='open', palette='Set1')
+    plt.title('Target and open')
+    plt.ylabel('Open in $USD')
+    plt.xlabel('Target Buy Day 0=no 1=yes')
+    plt.show()
+
+def low_chart(train):
+    '''
+    creats a catplot for target and daily low value
+    '''
+    plt.figure(figsize=(12,4))
+    sns.catplot(data=train, x='target', y='low', palette='Set1')
+    plt.title('Target and Low')
+    plt.ylabel('Low in $USD')
+    plt.xlabel('Target Rating')
+    plt.show()
+    
+    
 ###############################  satatistical tests ######################
 
 def run_low_ttest(data):
@@ -273,7 +258,7 @@ def scale_data(train, validate, test, columns):
         columns (list): List of column names to scale.
     Returns:
         tuple: Scaled data as (X_train_scaled, X_validate_scaled, X_test_scaled).
-    Tu run paste: X_train_scaled, y_train, X_validate_scaled, y_validate, X_test_scaled, y_test = scale_data(train, validate, test, ['open', 'high','low','close','volume'])
+    Tu run paste: X_train_scaled, y_train, X_validate_scaled, y_validate, X_test_scaled, y_test = explore.scale_data(train, validate, test, ['open', 'high','low','close','volume'])
 
     """
     # create X & y version of train, where y is a series with just the target variable and X are all the features.
@@ -365,3 +350,15 @@ results
         results = results.append({'model': name, 'set': 'validate', 'precision': val_precision}, ignore_index=True)
 
     return results,X_train_scaled, X_test_scaled,y_test,y_train
+
+def get_test_model(X_train_scaled,y_test,y_train,X_test_scaled):
+    '''
+    This will run the random forest model on the test set
+    To run past: explore.get_test_model(X_train_scaled,y_test,y_train,X_test_scaled)
+    '''
+    rf= RandomForestClassifier(max_depth=3,random_state=123)
+    rf.fit(X_train_scaled, y_train)
+    y_pred = rf.predict(X_test_scaled)
+    precision = precision_score(y_test, y_pred)
+    results_df = pd.DataFrame({'Model': 'Random_forest','Precision': [precision]})
+    return results_df
