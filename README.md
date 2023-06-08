@@ -30,29 +30,42 @@ There should be some combination of features that can be used to build a predict
         * This caused a major change in market behaviors 
         * dropping this data will keep the model from favoring 70 years of data that generally no longer apply 
         * NASDAQ introduced electronic trading inthe 1980's, but the NYSE didn't begin using them until the 90's
-    **** Create Engineered columns from existing data
+    * drop last row containing null value as that is what we are trying to predict 
+    * Create Engineered columns from existing data
+        * created tommorrw column based on the close price for today 
+        * created a target colum that is the encoded up(1) or down(0) value 1 indicating a day to buy stock with a predicted rise in price the next day
 
-        ***** evaluate database to tidy up 
-        ***** address any outliers
 *** Explore data in search of drivers of S&P 500 movement
     **** Answer the following initial questions
         ***** 1. ?
         ***** 2. ?
         ***** 3. ? 
         ***** 4. ? 
-*** Develop a model to predict S&P500 movement up or down
+*** Develop a model to predict what day to buy stock on S&P500 movement up or down
 *** Draw conclusions
 
 ## Data Dictionary
 
-
+| Feature | Datatype | Key | Definition |
+|---|---|---|---|
+| Date | object | Unique | Date of trading activity |
+| High | float64 | in USD | The highest value reached that day |
+| Low | float64 | in USD | The lowest value reached that day |
+| Close | float64 | in USD | The value at the time the market opened |
+| Open | float64 | in USD | The value at the time the market opened |
+| Volume | int64 | count | The total number of shares traded that day |
+| Tomorrow | float64 | in USD | The closing price the next day |
+| Target | int64 | 1 = Yes  <br>0 = No | Day you should buy because the value is expected to rise the next day |
 ## Steps to Reproduce
-* 1. Clone this repo.
+* 1. Clone this repo
 * 2. Acquire the data from yfinance 
     * use terminal to run pip install yfinance 
     * add import yfinance as yf to your libraries
-* 3. Put the data in the file containing the cloned repo.
-* 4. Run notebook.
+* 3. Put the data in the file containing the cloned repo
+* 4. Run notebook
+* 5. Note: Your impored csv. will contain data between my import date and yours
+    * Option 1: you can delete the additional rows to match 
+    * Option 2: accept that they are there and may cause minute changes to results- these should be insignificant overall
 
 ## Takeaways and Conclusions
 * Of the features examined all proved relevant to predicting tax values
