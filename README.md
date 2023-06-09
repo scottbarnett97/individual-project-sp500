@@ -1,5 +1,20 @@
 # Individual-Project- S&P 500 up or down
 
+## Executive summanry
+* Big idea:
+    * Explore if there is enough data provided by the yfinance python library to create a model that reliably predicts which days to buy into S&P 500 tied products by redicting if thir value will be up the next day.
+* Goals: 
+    * Discover key drivers of market movement in the data set
+    * Use them to create a ML model to predict which days are targeted buy days
+* Key findings:
+    * The features provided by yfinance which we evaluated are all related to predicting target buy days
+    * However, they are not strong enought to create a reliable model to base investment decisions on
+    * Random forest was our best model beating basline by only 0.1%
+* Recomendations:
+    * Daily news, government policies, and international events all play a role in market movement
+    * Using advaced AI and NLP models to incorporate this information into a model would likely prove useful
+    * Do not use the current model for making investment decisions
+    
 ## Description
 * We want to be able to predict what days to buy the S&P 500 based on it being up or down by close the next day
 

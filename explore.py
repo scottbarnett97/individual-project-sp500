@@ -105,7 +105,14 @@ def low_chart(train):
     plt.xlabel('Target Rating')
     plt.show()
     
-    
+def sp_chart(df):
+    '''
+    creates a chart of the S&P 500 value since 1990
+    '''
+    df.plot.line(y="close",x="date", title="S&P 500 Performance Since 1990",use_index=True,figsize=(12,4))
+    plt.xlabel('Year')
+    plt.ylabel('Value in $USD')
+    plt.show()
 ###############################  satatistical tests ######################
 
 def run_low_ttest(data):
