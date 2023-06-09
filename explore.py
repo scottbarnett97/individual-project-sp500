@@ -12,7 +12,6 @@ import seaborn as sns
 # Data acquisition
 from pydataset import data
 import scipy.stats as stats
-import env
 import os
 
 # Sklearn stuff:
